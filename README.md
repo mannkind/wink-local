@@ -6,8 +6,8 @@ Control a rooted Winkhub via MQTT. Currently only works for lights.
 
 * `go get`
 * `go build`
-* setup an entry in your ~/.ssh/config, the ssh key used needs to be passwordless
-r
+* setup an entry in your ~/.ssh/config
+```
     Host winkhub
         HostName <hostname or ip>
         User root
@@ -15,3 +15,4 @@ r
         ControlPath /tmp/ssh_mux_%h_%p_%r
         IdentityFile ~/.ssh/id_dsa
         IdentitiesOnly yes
+```
