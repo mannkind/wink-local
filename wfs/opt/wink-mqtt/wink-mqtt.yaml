@@ -1,0 +1,12 @@
+mqtt:
+    clientid: 'WinkMQTT'
+    broker:   'tcp://mosquitto:1883'
+    username: ''
+    password: ''
+    topicbase: 'winkhub'
+    retain: true
+radioattrs:
+    zigbee: "1,2" 
+    zwave: "2,3,7,8"
+    lutron: "1"
+
