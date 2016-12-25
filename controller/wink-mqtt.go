@@ -239,8 +239,7 @@ func (t *WinkController) waitForDeviceUpdate() {
 	go t.watcher.Start(deviceUpdated)
 
 	go func() {
-		for {
-			<-deviceUpdated
+		for _ = range deviceUpdated {
 			log.Print("Running DB Comparison")
 			t.databaseComparison()
 		}

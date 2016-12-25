@@ -10,7 +10,7 @@ import (
 	"github.com/spf13/viper"
 )
 
-const version string = "0.1.0"
+const version string = "0.1.1"
 
 var cfgFile string
 var reload = make(chan bool)
