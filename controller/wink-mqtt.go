@@ -59,6 +59,8 @@ func (t *WinkController) Start() error {
 		return token.Error()
 	}
 
+	t.waitForDeviceUpdate()
+
 	return nil
 }
 
@@ -90,8 +92,6 @@ func (t *WinkController) onConnect(client mqtt.Client) {
 			log.Printf("Subscribe Error: %s", token.Error())
 		}
 	}
-
-	t.waitForDeviceUpdate()
 }
 
 func (t *WinkController) addDevice(client mqtt.Client, msg mqtt.Message) {
@@ -266,8 +266,8 @@ func (t *WinkController) databaseComparison() {
 		value := devicePieces[2]
 
 		if prevValue, ok := t.knownDevices[topic]; !ok || prevValue != value {
+			log.Printf("Updating %s %s", topic, value)
 			t.publish(topic, value)
-			t.knownDevices[topic] = value
 		}
 	}
 }

@@ -52,7 +52,7 @@ func (t *Sqlite3) States() ([]string, error) {
 		stdout, err := runnable.Output()
 		if err != nil {
 			log.Println(err)
-			return []string{}, err
+			stdout = []byte{}
 		}
 		t.locked = false
 		return strings.Split(string(stdout), "\n"), nil

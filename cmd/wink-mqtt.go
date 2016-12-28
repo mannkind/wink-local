@@ -10,7 +10,7 @@ import (
 	"github.com/spf13/viper"
 )
 
-const version string = "0.1.1"
+const version string = "0.1.2"
 
 var cfgFile string
 var reload = make(chan bool)
@@ -32,13 +32,10 @@ var WinkCmd = &cobra.Command{
 				log.Panicf("Error starting handlers.Controller: %s", err)
 			}
 
-			select {
-			case <-reload:
-				if controller.Client != nil && controller.Client.IsConnected() {
-					controller.Client.Disconnect(0)
-					time.Sleep(500 * time.Millisecond)
-				}
-				continue
+			<-reload
+			if controller.Client != nil && controller.Client.IsConnected() {
+				controller.Client.Disconnect(0)
+				time.Sleep(500 * time.Millisecond)
 			}
 		}
 	},
