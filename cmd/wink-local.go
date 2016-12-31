@@ -1,16 +1,14 @@
 package cmd
 
 import (
-	"log"
-	"time"
-
 	"github.com/fsnotify/fsnotify"
 	"github.com/mannkind/wink-local/controller"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	"log"
 )
 
-const version string = "0.1.3"
+const version string = "0.2.0"
 
 var cfgFile string
 var reload = make(chan bool)
@@ -21,23 +19,17 @@ var WinkLocal = &cobra.Command{
 	Short: "A local-control replacement for the Wink Hub",
 	Long:  "A local-control replacement for the Wink Hub",
 	Run: func(cmd *cobra.Command, args []string) {
-		for {
-			controller := controller.WinkController{}
+		controller := controller.WinkController{}
 
-			if err := viper.Unmarshal(&controller); err != nil {
-				log.Panicf("Error unmarshaling configuration: %s", err)
-			}
-
-			if err := controller.Start(); err != nil {
-				log.Panicf("Error starting handlers.Controller: %s", err)
-			}
-
-			<-reload
-			if controller.Client != nil && controller.Client.IsConnected() {
-				controller.Client.Disconnect(0)
-				time.Sleep(500 * time.Millisecond)
-			}
+		if err := viper.Unmarshal(&controller); err != nil {
+			log.Panicf("Error unmarshaling configuration: %s", err)
 		}
+
+		if err := controller.Start(); err != nil {
+			log.Panicf("Error starting handlers.Controller: %s", err)
+		}
+
+		<-reload
 	},
 }
 

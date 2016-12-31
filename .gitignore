@@ -1,1 +1,6 @@
+.vscode
+.coverprofile
 wink-local
+web/node_modules
+web/debug
+web/dist

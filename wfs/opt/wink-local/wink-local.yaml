@@ -1,3 +1,5 @@
+http:
+    port: 8080
 mqtt:
     clientid: 'WinkMQTT'
     broker:   'tcp://mosquitto:1883'

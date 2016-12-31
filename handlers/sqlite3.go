@@ -14,7 +14,6 @@ type Sqlite3 struct {
 	Zigbee string
 	Zwave  string
 	Lutron string
-
 	db     string
 	locked bool
 }

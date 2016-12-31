@@ -5,13 +5,7 @@ import (
 	"testing"
 )
 
-func TestStatesFake(t *testing.T) {
-	runnable := exec.Command("bash", "-c", "echo 1")
-	runnable.Run()
-}
-
-/*
-@TODO: Figure out how to make this work on TravisCI
+// @TODO: Figure out how to make this work on TravisCI
 func TestStatesError(t *testing.T) {
 	runnable := exec.Command("bash", "-c", "rm -f /tmp/database && mkdir -p /tmp/database")
 	runnable.Run()
@@ -22,6 +16,7 @@ func TestStatesError(t *testing.T) {
 	}
 }
 
+// @TODO: Figure out how to make this work on TravisCI
 func TestStates(t *testing.T) {
 	runnable := exec.Command("bash", "-c", "mkdir -p /tmp/database; cp $GOHOME/src/github.com/mannkind/wink-local/tests/apron.db /tmp/database")
 	runnable.Run()
@@ -31,4 +26,3 @@ func TestStates(t *testing.T) {
 		t.Errorf("Sqlite3 errored unexpectedly")
 	}
 }
-*/

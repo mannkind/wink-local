@@ -16,6 +16,7 @@ A local-control replacement for the Wink Hub that utilizes MQTT
 
 ```
 ssh winkhub "mkdir -p /opt/wink-local" 
+scp -r web/dist winkhub:/opt/wink-local
 cat wfs/etc/monitrc | ssh winkhub "cat >> /etc/monitrc"
 cat wfs/etc/rc.d/init.d/wink-local | ssh winkhub "cat >> /etc/rc.d/init.d/wink-local"
 scp wink-local winkhub:/opt/wink-local
@@ -29,6 +30,8 @@ ssh winkhub "/etc/rc.d/init.d/wink-local start"
 Configuration happens in the /opt/wink-local/wink-local.yaml file. An example might look this:
 
 ```
+http:
+    port: 8080
 mqtt:
     clientid: 'WinkLocal'
     broker:   'tcp://mosquitto:1883'

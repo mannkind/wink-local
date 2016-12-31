@@ -88,6 +88,28 @@ func TestAddDeviceToGroup(t *testing.T) {
 	}
 }
 
+func TestDeleteDeviceFromGroup(t *testing.T) {
+	a := Apron{}
+	var tests = []struct {
+		ID       string
+		GroupID  string
+		Expected string
+	}{
+		{"1", "2", "aprontest -d -x 2 -m 1"},
+		{"2", "", ""},
+		{"", "", ""},
+	}
+
+	for _, v := range tests {
+		a.LastRun = ""
+		a.DeleteDeviceFromGroup(v.ID, v.GroupID)
+
+		if a.LastRun != v.Expected {
+			t.Errorf("Wrong cmd - Actual: %s, Expected: %s", a.LastRun, v.Expected)
+		}
+	}
+}
+
 func TestDeleteDevice(t *testing.T) {
 	a := Apron{}
 	var tests = []struct {
@@ -173,5 +195,32 @@ func TestUpdateDeviceName(t *testing.T) {
 		if a.LastRun != v.Expected {
 			t.Errorf("Wrong cmd - Actual: %s, Expected: %s", a.LastRun, v.Expected)
 		}
+	}
+}
+
+func TestListDevices(t *testing.T) {
+	a := Apron{}
+	result := a.ListDevices()
+
+	if len(result) != 0 {
+		t.Errorf("Expected nothing without aprontest")
+	}
+}
+
+func TestListGroups(t *testing.T) {
+	a := Apron{}
+	result := a.ListGroups()
+
+	if len(result) != 0 {
+		t.Errorf("Expected nothing without aprontest")
+	}
+}
+
+func TestListGroupNodes(t *testing.T) {
+	a := Apron{}
+	result := a.ListGroupNodes("1")
+
+	if len(result) != 0 {
+		t.Errorf("Expected nothing without aprontest")
 	}
 }
