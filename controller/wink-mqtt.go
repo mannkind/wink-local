@@ -238,12 +238,12 @@ func (t *WinkController) waitForDeviceUpdate() {
 	deviceUpdated := make(chan bool)
 	go t.watcher.Start(deviceUpdated)
 
-	go func() {
+	go func(deviceUpdated chan bool) {
 		for _ = range deviceUpdated {
 			log.Print("Running DB Comparison")
 			t.databaseComparison()
 		}
-	}()
+	}(deviceUpdated)
 }
 
 func (t *WinkController) databaseComparison() {

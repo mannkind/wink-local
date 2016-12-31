@@ -139,10 +139,10 @@ func (t *Apron) updateBoth(isGroup bool, id string, attr string, value string) b
 
 	t.Debounce[topic] = true
 	debounceTimer := time.NewTimer(time.Millisecond * 1000)
-	go func() {
+	go func(debounceTimer *time.Timer) {
 		<-debounceTimer.C
 		t.Debounce[topic] = false
-	}()
+	}(debounceTimer)
 
 	return true
 }
@@ -152,8 +152,8 @@ func (t *Apron) run(args []string) {
 	t.LastRun = fmt.Sprintf("aprontest %s", strings.Join(args, " "))
 	log.Printf("Running %s", t.LastRun)
 
-	go func(cmd *exec.Cmd) {
-		if err := cmd.Run(); err != nil {
+	go func(runnable *exec.Cmd) {
+		if err := runnable.Run(); err != nil {
 			log.Printf("... %s", err)
 		}
 	}(runnable)

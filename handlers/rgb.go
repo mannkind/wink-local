@@ -43,10 +43,10 @@ func (t *RGB) Update(color string) bool {
 
 	t.Debounce = true
 	debounceTimer := time.NewTimer(time.Millisecond * 1000)
-	go func() {
+	go func(debounceTimer *time.Timer) {
 		<-debounceTimer.C
 		t.Debounce = false
-	}()
+	}(debounceTimer)
 
 	return true
 }
@@ -78,8 +78,8 @@ func (t *RGB) run(args []string) {
 	t.LastRun = fmt.Sprintf("set_rgb %s", strings.Join(args, " "))
 	log.Printf("Running %s", t.LastRun)
 
-	go func(cmd *exec.Cmd) {
-		if err := cmd.Run(); err != nil {
+	go func(runnable *exec.Cmd) {
+		if err := runnable.Run(); err != nil {
 			log.Printf("... %s", err)
 		}
 	}(runnable)
