@@ -1,0 +1,20 @@
+#!/bin/sh
+
+case "${1}" in
+start)
+echo -n "Starting wink-local..."
+/opt/wink-local/wink-local -c /opt/wink-local/wink-local.yaml > /var/log/wink-local.log 2>&1 &
+;;
+stop)
+echo -n "Stopping wink-local..."
+killall wink-local
+;;
+restart)
+${0} stop
+sleep 1
+${0} start
+;;
+*)
+echo "Usage: $0 [start|stop|restart]"
+;;
+esac

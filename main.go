@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/mannkind/wink-mqtt/cmd"
+	"github.com/mannkind/wink-local/cmd"
 )
 
 func main() {

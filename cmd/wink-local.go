@@ -5,21 +5,21 @@ import (
 	"time"
 
 	"github.com/fsnotify/fsnotify"
-	"github.com/mannkind/wink-mqtt/controller"
+	"github.com/mannkind/wink-local/controller"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
 
-const version string = "0.1.2"
+const version string = "0.1.3"
 
 var cfgFile string
 var reload = make(chan bool)
 
-// WinkCmd - The root Wink commands
-var WinkCmd = &cobra.Command{
-	Use:   "wink",
-	Short: "A replace 'firmware' for Wink",
-	Long:  "A replace 'firmware' for Wink",
+// WinkLocal - The root Wink commands
+var WinkLocal = &cobra.Command{
+	Use:   "wink-local",
+	Short: "A local-control replacement for the Wink Hub",
+	Long:  "A local-control replacement for the Wink Hub",
 	Run: func(cmd *cobra.Command, args []string) {
 		for {
 			controller := controller.WinkController{}
@@ -43,13 +43,13 @@ var WinkCmd = &cobra.Command{
 
 // Execute - Adds all child commands to the root command sets flags appropriately.
 func Execute() {
-	if err := WinkCmd.Execute(); err != nil {
+	if err := WinkLocal.Execute(); err != nil {
 		log.Fatal(err)
 	}
 }
 
 func init() {
-	log.Printf("Wink Version: %s", version)
+	log.Printf("Wink Local Version: %s", version)
 
 	cobra.OnInitialize(func() {
 		viper.SetConfigFile(cfgFile)
@@ -66,5 +66,5 @@ func init() {
 		log.Printf("Loaded Configuration %s", cfgFile)
 	})
 
-	WinkCmd.PersistentFlags().StringVarP(&cfgFile, "config", "c", ".wink.yaml", "The path to the configuration file")
+	WinkLocal.PersistentFlags().StringVarP(&cfgFile, "config", "c", "wink-local.yaml", "The path to the configuration file")
 }

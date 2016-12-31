@@ -3,7 +3,7 @@ package controller
 import (
 	"fmt"
 	"github.com/eclipse/paho.mqtt.golang"
-	"github.com/mannkind/wink-mqtt/handlers"
+	"github.com/mannkind/wink-local/handlers"
 	"log"
 	"strings"
 )

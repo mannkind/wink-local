@@ -23,7 +23,7 @@ func TestStatesError(t *testing.T) {
 }
 
 func TestStates(t *testing.T) {
-	runnable := exec.Command("bash", "-c", "mkdir -p /tmp/database; cp $GOHOME/src/github.com/mannkind/wink-mqtt/tests/apron.db /tmp/database")
+	runnable := exec.Command("bash", "-c", "mkdir -p /tmp/database; cp $GOHOME/src/github.com/mannkind/wink-local/tests/apron.db /tmp/database")
 	runnable.Run()
 
 	sqlite3 := Sqlite3{db: "/tmp/database/apron.db"}
