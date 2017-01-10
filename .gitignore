@@ -1,5 +1,8 @@
+.DS_Store
 .vscode
 .coverprofile
+glide.lock
+vendor
 wink-local
 web/node_modules
 web/debug

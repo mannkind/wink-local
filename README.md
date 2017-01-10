@@ -6,28 +6,33 @@ License](https://img.shields.io/badge/License-MIT-orange.svg?style=flat-square)]
 [![Coverage Status](https://img.shields.io/codecov/c/github/mannkind/wink-local/master.svg)](http://codecov.io/github/mannkind/wink-local?branch=master)
 [![Go Report Card](https://goreportcard.com/badge/github.com/mannkind/wink-local)](https://goreportcard.com/report/github.com/mannkind/wink-local)
 
-A local-control replacement for the Wink Hub that utilizes MQTT
+A local-control replacement for the Wink Hub that utilizes MQTT.
 
-# Build
+## Building
 
-* ./build.sh
-
-# Installation
+The following set of commands should help you build the application for the Wink Hub.
 
 ```
-ssh winkhub "mkdir -p /opt/wink-local" 
-scp -r web/dist winkhub:/opt/wink-local
-cat wfs/etc/monitrc | ssh winkhub "cat >> /etc/monitrc"
-cat wfs/etc/rc.d/init.d/wink-local | ssh winkhub "cat >> /etc/rc.d/init.d/wink-local"
-scp wink-local winkhub:/opt/wink-local
-scp wfs/opt/wink-local/wink-local.yaml winkhub:/opt/wink-local/
-scp wfs/etc/rc.d/init.d/wink-local winkhub:/etc/rc.d/init.d/wink-local
-ssh winkhub "/etc/rc.d/init.d/wink-local start"
+# Building the application
+REPO=github.com/mannkind/wink-local
+GOREPO=$GOPATH/src/$REPO
+NODEREPO=$GOREPO/web
+
+go get -d -v $REPO
+GOOS=linux GOARCH=arm GOARM=5 go build -v $REPO
+upx -q $GOREPO/wink-local
+
+# Build the web-ui
+npm --prefix $NODEREPO install
+npm --prefix $NODEREPO run dist
 ```
 
-# Configuration
+## Configuring
 
-Configuration happens in the /opt/wink-local/wink-local.yaml file. An example might look this:
+Configuration happens in the `wfs/opt/wink-local/wink-local.yaml` file, 
+which ends up in `/opt/wink-local/` on the Wink Hub.  
+
+An example might look this:
 
 ```
 http:
@@ -36,11 +41,25 @@ mqtt:
     clientid: 'WinkLocal'
     broker:   'tcp://mosquitto:1883'
     topicbase: 'winkhub'
-    retain: true
+    retain: false
 ```
 
-# Dependencies
+## Installing
 
-* [Go](https://golang.org)
-* [UPX](https://upx.github.io)
-* An MQTT broker, such as [Mosquitto](https://mosquitto.org)
+The following set of commands should help you copy the necessary files to the Wink Hub. 
+
+```
+GOREPO=$GOPATH/src/github.com/mannkind/wink-local
+NODEREPO=$GOREPO/web
+WFS=$GOREPO/wfs
+WINKHUBHOST=winkhub
+
+ssh $WINKHUBHOST "mkdir -p /opt/wink-local" 
+scp -r $GOREPO/wink-local \
+    $NODEREPO/dist \
+    $WFS/opt/wink-local/wink-local.yaml \
+    $WINKHUBHOST:/opt/wink-local
+scp $WFS/etc/rc.d/init.d/wink-local $WINKHUBHOST:/etc/rc.d/init.d/wink-local
+cat $WFS/etc/monitrc | ssh $WINKHUBHOST "cat >> /etc/monitrc"
+cat $WFS/etc/rc.d/init.d/wink-local | ssh $WINKHUBHOST "cat >> /etc/rc.d/init.d/wink-local"
+```

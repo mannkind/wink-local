@@ -1,7 +1,7 @@
 {
-  "name": "wink-local-ui",
+  "name": "wink-local",
   "version": "0.2.0",
-  "description": "A simple control panel for wink-mqtt",
+  "description": "A simple web-ui for the wink-local application",
   "author": "Dustin Brewer",
   "repository": "github.com/mannkind/wink-mqtt",
   "license": "MIT",
