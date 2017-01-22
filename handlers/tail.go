@@ -1,9 +1,10 @@
 package handlers
 
 import (
-	"github.com/hpcloud/tail"
 	"log"
 	"strings"
+
+	"github.com/hpcloud/tail"
 )
 
 // Tail - Tail the wink hub log file

@@ -3,12 +3,13 @@ package controller
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/abbot/go-http-auth"
-	"github.com/gorilla/mux"
-	"github.com/mannkind/wink-local/handlers"
 	"log"
 	"net/http"
 	"strings"
+
+	"github.com/abbot/go-http-auth"
+	"github.com/gorilla/mux"
+	"github.com/mannkind/wink-local/handlers"
 )
 
 type winkHTTP struct {

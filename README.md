@@ -14,17 +14,9 @@ The following set of commands should help you build the application for the Wink
 
 ```
 # Building the application
-REPO=github.com/mannkind/wink-local
-GOREPO=$GOPATH/src/$REPO
-NODEREPO=$GOREPO/web
-
-go get -d -v $REPO
-GOOS=linux GOARCH=arm GOARM=5 go build -v $REPO
-upx -q $GOREPO/wink-local
-
-# Build the web-ui
-npm --prefix $NODEREPO install
-npm --prefix $NODEREPO run dist
+git clone https://github.com/mannkind/wink-local
+cd wink-local
+GOOS=linux GOARCH=arm GOARM=5 make
 ```
 
 ## Configuring
@@ -49,13 +41,13 @@ mqtt:
 The following set of commands should help you copy the necessary files to the Wink Hub. 
 
 ```
-GOREPO=$GOPATH/src/github.com/mannkind/wink-local
+GOREPO=wink-local
 NODEREPO=$GOREPO/web
 WFS=$GOREPO/wfs
 WINKHUBHOST=winkhub
 
 ssh $WINKHUBHOST "mkdir -p /opt/wink-local" 
-scp -r $GOREPO/wink-local \
+scp -r $GOREPO/bin/linux_arm/wink-local \
     $NODEREPO/dist \
     $WFS/opt/wink-local/wink-local.yaml \
     $WINKHUBHOST:/opt/wink-local

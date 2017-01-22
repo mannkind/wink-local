@@ -1,17 +1,16 @@
 package cmd
 
 import (
-	"github.com/fsnotify/fsnotify"
+	"log"
+
 	"github.com/mannkind/wink-local/controller"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"log"
 )
 
-const version string = "0.2.0"
+const version string = "0.2.5"
 
 var cfgFile string
-var reload = make(chan bool)
 
 // WinkLocal - The root Wink commands
 var WinkLocal = &cobra.Command{
@@ -29,7 +28,7 @@ var WinkLocal = &cobra.Command{
 			log.Panicf("Error starting handlers.Controller: %s", err)
 		}
 
-		<-reload
+        select {}
 	},
 }
 
@@ -45,12 +44,6 @@ func init() {
 
 	cobra.OnInitialize(func() {
 		viper.SetConfigFile(cfgFile)
-		viper.WatchConfig()
-		viper.OnConfigChange(func(e fsnotify.Event) {
-			log.Printf("Configuration Changed: %s", e.Name)
-			reload <- true
-		})
-
 		log.Printf("Loading Configuration %s", cfgFile)
 		if err := viper.ReadInConfig(); err != nil {
 			log.Fatalf("Error Loading Configuration: %s ", err)

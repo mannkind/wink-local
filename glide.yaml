@@ -1,4 +1,4 @@
-package: github.com/mannkind/wink-local
+package: .
 import:
 - package: github.com/abbot/go-http-auth
   version: ^0.3.0

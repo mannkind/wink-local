@@ -2,9 +2,10 @@ package controller
 
 import (
 	"fmt"
-	"github.com/mannkind/wink-local/handlers"
 	"log"
 	"strings"
+
+	"github.com/mannkind/wink-local/handlers"
 )
 
 // WinkController - WinkController all the things!
@@ -22,6 +23,10 @@ type WinkController struct {
 		TopicBase string
 		Retain    bool
 	}
+	People []struct {
+		BT    string
+		Topic string
+	}
 	RadioAttrs struct {
 		Zigbee string
 		Zwave  string
@@ -37,12 +42,9 @@ type WinkController struct {
 
 // Start - Start WinkController
 func (t *WinkController) Start() error {
-	t.winkMQTT = winkMQTT{}
 	t.winkMQTT.settings = t.MQTT
-
-	t.winkHTTP = winkHTTP{}
+	t.winkMQTT.people = t.People
 	t.winkHTTP.settings = t.HTTP
-
 	t.database.Zigbee = t.RadioAttrs.Zigbee
 	t.database.Zwave = t.RadioAttrs.Zwave
 	t.database.Lutron = t.RadioAttrs.Lutron

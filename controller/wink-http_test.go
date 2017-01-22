@@ -2,12 +2,13 @@ package controller
 
 import (
 	"fmt"
-	"github.com/abbot/go-http-auth"
-	"github.com/gorilla/mux"
 	"net/http"
 	"net/http/httptest"
 	"strings"
 	"testing"
+
+	"github.com/abbot/go-http-auth"
+	"github.com/gorilla/mux"
 )
 
 var testAuthenticatorUsername = "root"

@@ -12,7 +12,7 @@ import (
 // RGB - RGB all the things!
 type RGB struct {
 	LastRun  string
-	Debounce bool
+	LastRunTime  time.Time
 }
 
 // Flash - Add a device to the hub
@@ -29,9 +29,11 @@ func (t *RGB) Flash(color string, alternative string, microseconds string) {
 
 // Update - Add a device to the hub
 func (t *RGB) Update(color string) bool {
-	if t.Debounce {
-		return false
-	}
+    if time.Since(t.LastRunTime) < time.Millisecond * 1000 {
+        return false
+    }
+    
+    t.LastRunTime = time.Now()
 
 	r, g, b, err := t.colorParse(color)
 	if err != nil {
@@ -40,13 +42,6 @@ func (t *RGB) Update(color string) bool {
 	}
 
 	t.run([]string{fmt.Sprintf("%d", r), fmt.Sprintf("%d", g), fmt.Sprintf("%d", b)})
-
-	t.Debounce = true
-	debounceTimer := time.NewTimer(time.Millisecond * 1000)
-	go func(debounceTimer *time.Timer) {
-		<-debounceTimer.C
-		t.Debounce = false
-	}(debounceTimer)
 
 	return true
 }

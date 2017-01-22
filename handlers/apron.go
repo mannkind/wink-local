@@ -12,7 +12,7 @@ import (
 // Apron - Apron all the things!
 type Apron struct {
 	LastRun  string
-	Debounce map[string]bool
+	LastRunTime map[string]time.Time
 }
 
 // ApronDeviceGroup - A device/group listed in the Apron database
@@ -290,12 +290,14 @@ func (t *Apron) deleteBoth(isGroup bool, id string) {
 
 func (t *Apron) updateBoth(isGroup bool, id string, attr string, value string) bool {
 	topic := fmt.Sprintf("%t/%s/%s", isGroup, id, attr)
-	if t.Debounce == nil {
-		t.Debounce = make(map[string]bool)
+	if t.LastRunTime == nil {
+		t.LastRunTime = make(map[string]time.Time)
 	}
-	if t.Debounce[topic] {
+	if time.Since(t.LastRunTime[topic]) < time.Millisecond * 1000 {
 		return false
 	}
+
+    t.LastRunTime[topic] = time.Now()
 
 	argXM := "-m"
 	if isGroup {
@@ -303,13 +305,6 @@ func (t *Apron) updateBoth(isGroup bool, id string, attr string, value string) b
 	}
 
 	t.run([]string{"-u", argXM, id, "-t", attr, "-v", value})
-
-	t.Debounce[topic] = true
-	debounceTimer := time.NewTimer(time.Millisecond * 1000)
-	go func(debounceTimer *time.Timer) {
-		<-debounceTimer.C
-		t.Debounce[topic] = false
-	}(debounceTimer)
 
 	return true
 }

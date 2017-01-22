@@ -2,10 +2,11 @@ package controller
 
 import (
 	"fmt"
-	"github.com/eclipse/paho.mqtt.golang"
-	"github.com/mannkind/wink-local/handlers"
 	"log"
 	"strings"
+
+	"github.com/eclipse/paho.mqtt.golang"
+	"github.com/mannkind/wink-local/handlers"
 )
 
 type winkMQTT struct {
@@ -17,6 +18,10 @@ type winkMQTT struct {
 		Password  string
 		TopicBase string
 		Retain    bool
+	}
+	people []struct {
+		BT    string
+		Topic string
 	}
 	apron       handlers.Apron
 	statuslight handlers.RGB
@@ -73,6 +78,7 @@ func (t *winkMQTT) onConnect(client mqtt.Client) {
 		fmt.Sprintf("%s/group/+/+/update", t.settings.TopicBase):          t.updateGroup,
 		fmt.Sprintf("%s/status_light/state/update", t.settings.TopicBase): t.updateStatuslightState,
 		fmt.Sprintf("%s/status_light/rgb/update", t.settings.TopicBase):   t.updateStatuslightRGB,
+		"home/people": t.searchForPeople,
 	}
 
 	if !client.IsConnected() {
@@ -211,4 +217,22 @@ func (t *winkMQTT) updateStatuslightRGB(client mqtt.Client, msg mqtt.Message) {
 	parts = strings.Split(topic, "/")
 	pieces := parts[:len(parts)-1]
 	t.publish(strings.Join(pieces, "/"), payload)
+}
+
+func (t *winkMQTT) searchForPeople(client mqtt.Client, msg mqtt.Message) {
+	payload := string(msg.Payload())
+	if payload != "Find" {
+		return
+	}
+
+	bt := handlers.BT{}
+	bt.Up()
+
+	for _, person := range t.people {
+		log.Printf("Searching for %s", person.BT)
+		state := bt.FindPerson(person.BT)
+
+		log.Printf("Publishing %s %s", person.Topic, state)
+		t.publish(person.Topic, state)
+	}
 }
