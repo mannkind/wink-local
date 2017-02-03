@@ -11,8 +11,8 @@ import (
 
 // RGB - RGB all the things!
 type RGB struct {
-	LastRun  string
-	LastRunTime  time.Time
+	LastRun     string
+	LastRunTime time.Time
 }
 
 // Flash - Add a device to the hub
@@ -29,11 +29,11 @@ func (t *RGB) Flash(color string, alternative string, microseconds string) {
 
 // Update - Add a device to the hub
 func (t *RGB) Update(color string) bool {
-    if time.Since(t.LastRunTime) < time.Millisecond * 1000 {
-        return false
-    }
-    
-    t.LastRunTime = time.Now()
+	if time.Since(t.LastRunTime) < time.Millisecond*1000 {
+		return false
+	}
+
+	t.LastRunTime = time.Now()
 
 	r, g, b, err := t.colorParse(color)
 	if err != nil {

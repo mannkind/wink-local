@@ -28,7 +28,7 @@ var WinkLocal = &cobra.Command{
 			log.Panicf("Error starting handlers.Controller: %s", err)
 		}
 
-        select {}
+		select {}
 	},
 }
 

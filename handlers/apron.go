@@ -11,7 +11,7 @@ import (
 
 // Apron - Apron all the things!
 type Apron struct {
-	LastRun  string
+	LastRun     string
 	LastRunTime map[string]time.Time
 }
 
@@ -293,11 +293,11 @@ func (t *Apron) updateBoth(isGroup bool, id string, attr string, value string) b
 	if t.LastRunTime == nil {
 		t.LastRunTime = make(map[string]time.Time)
 	}
-	if time.Since(t.LastRunTime[topic]) < time.Millisecond * 1000 {
+	if time.Since(t.LastRunTime[topic]) < time.Millisecond*1000 {
 		return false
 	}
 
-    t.LastRunTime[topic] = time.Now()
+	t.LastRunTime[topic] = time.Now()
 
 	argXM := "-m"
 	if isGroup {
