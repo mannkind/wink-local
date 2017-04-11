@@ -8,8 +8,6 @@ import (
 	"github.com/spf13/viper"
 )
 
-const version string = "0.2.5"
-
 var cfgFile string
 
 // WinkLocal - The root Wink commands
@@ -40,8 +38,6 @@ func Execute() {
 }
 
 func init() {
-	log.Printf("Wink Local Version: %s", version)
-
 	cobra.OnInitialize(func() {
 		viper.SetConfigFile(cfgFile)
 		log.Printf("Loading Configuration %s", cfgFile)

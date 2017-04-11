@@ -1,4 +1,4 @@
-import axios, { Promise } from "axios";
+import axios from "axios";
 
 class ApronService {
     public addDevice(radio: string): Promise<void> {
@@ -8,7 +8,7 @@ class ApronService {
         .catch((reason) => {
             // console.log(`Failed to addDevice because ${reason}`);
         });
-    };
+    }
 
     public removeDevice(deviceId: number): Promise<void> {
         return axios.post("/device/delete", {
@@ -51,7 +51,7 @@ class ApronService {
             DeviceID: nodeId.toString(),
         })
         .catch((reason) => {
-            // console.log(`Failed to addNode because ${reason}`); 
+            // console.log(`Failed to addNode because ${reason}`);
         });
     }
 
@@ -60,9 +60,9 @@ class ApronService {
             DeviceID: deviceId.toString(),
         })
         .catch((reason) => {
-            // console.log(`Failed to deleteNode because ${reason}`); 
+            // console.log(`Failed to deleteNode because ${reason}`);
         });
     }
 }
 
-export const Apron = new ApronService();
+export default new ApronService();

@@ -29,8 +29,7 @@ upx: .GOPATH/.ok build
 
 .PHONY: web
 web: .GOPATH/.ok
-	npm --prefix web install
-	npm --prefix web run dist
+	cd web && yarn && yarn build
 
 ##### ^^^^^^ EDIT ABOVE ^^^^^^ #####
 
