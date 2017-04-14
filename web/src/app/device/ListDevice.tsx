@@ -7,7 +7,7 @@ import IAppPropsWithStore from "../../redux/State";
 interface IListDeviceProps extends IAppPropsWithStore { device: IApronDeviceGroup; }
 export default class ListDevice extends React.Component<IListDeviceProps, any> {
     public render() {
-        const device = this.props.device;
+        const { device } = this.props;
         return (
             <div className="col col-sm-4" style={{marginBottom: "1rem"}} key={device.ID}>
                 <div className="input-group input-group-sm">

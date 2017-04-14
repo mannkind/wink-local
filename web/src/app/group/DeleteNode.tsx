@@ -7,8 +7,7 @@ import IAppPropsWithStore from "../../redux/State";
 interface IDeleteNodeProps extends IAppPropsWithStore { group: IApronDeviceGroup; node: IApronDeviceGroup; }
 export default class DeleteNode extends React.Component<IDeleteNodeProps, any> {
     public render() {
-        const group = this.props.group;
-        const node = this.props.node;
+        const { group, node } = this.props;
         return (
             <div className="col col-md-4" style={{marginBottom: "1rem"}} key={node.ID}>
                 <div className="input-group input-group-sm">

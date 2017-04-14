@@ -29,10 +29,8 @@ export default class App extends React.Component<IAppPropsWithStore, void> {
 
     public render() {
         const title = "Wink-Local UI";
-        const store = this.props.store;
-        const state = store.getState();
-        const devices = state.devices;
-        const groups = state.groups;
+        const { store } = this.props;
+        const { devices, groups } = store.getState();
 
         const existingDevices = devices.map((device, index) => {
             return (<ListDevice store={store} device={device} key={device.ID} />);

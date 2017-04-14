@@ -25,7 +25,7 @@ export const AppReducer = (state: IAppState, action: IAppActions): IAppState => 
             case IAppActionTypes.REMOVE_DEVICE:
                 return (() => {
                     const devices = state.devices.filter((device) => device.ID !== action.payload);
-                    const groups = state.groups;
+                    const { groups } = state;
 
                     groups.forEach((x) => {
                         if (x.Nodes == null) {
@@ -45,9 +45,7 @@ export const AppReducer = (state: IAppState, action: IAppActions): IAppState => 
 
             case IAppActionTypes.UPDATE_DEVICE:
                 return (() => {
-                    const devices = state.devices;
-                    const groups = state.groups;
-
+                    const { devices, groups } = state;
                     const device = devices.find((x) => x.ID === action.payload.deviceId);
                     device.Name = action.payload.name;
 
@@ -72,9 +70,7 @@ export const AppReducer = (state: IAppState, action: IAppActions): IAppState => 
 
             case IAppActionTypes.ADD_DEVICE_TO_GROUP:
                 return (() => {
-                    const devices = state.devices;
-                    const groups = state.groups;
-
+                    const { devices, groups } = state;
                     const device = devices.find((x) => x.ID === action.payload.deviceId);
                     const group = groups.find((x) => x.ID === action.payload.groupId);
 
@@ -89,9 +85,7 @@ export const AppReducer = (state: IAppState, action: IAppActions): IAppState => 
 
             case IAppActionTypes.REMOVE_DEVICE_FROM_GROUP:
                 return (() => {
-                    const devices = state.devices;
-                    const groups = state.groups;
-
+                    const { devices, groups } = state;
                     const device = devices.find((x) => x.ID === action.payload.deviceId);
                     const group = groups.find((x) => x.ID === action.payload.groupId);
 

@@ -9,10 +9,7 @@ import DeleteNode from "./DeleteNode";
 interface IListGroupProps extends IAppPropsWithStore { devices: IApronDeviceGroup[]; group: IApronDeviceGroup; }
 export default class ListGroup extends React.Component<IListGroupProps, void> {
     public render() {
-        const store = this.props.store;
-        const group = this.props.group;
-        const devices = this.props.devices;
-
+        const { devices, group, store } = this.props;
         const groupNodes = group.Nodes.map((node, index1) => {
             return (<DeleteNode store={store} group={group} node={node} />);
         });
