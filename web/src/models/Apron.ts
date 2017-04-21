@@ -1,6 +1,18 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 
 class ApronService {
+    public listDevices(): Promise<AxiosResponse> {
+        return axios.get("/device/list").catch((reason) => {
+            // console.log(`Failed to list groups because ${reason}`);
+        });
+    }
+
+    public listGroups(): Promise<AxiosResponse> {
+        return axios.get("/group/list").catch((reason) => {
+            // console.log(`Failed to list groups because ${reason}`);
+        });
+    }
+
     public addDevice(radio: string): Promise<void> {
         return axios.post("/device/add", {
             Radio: radio.toLowerCase(),

@@ -1,13 +1,11 @@
-import axios from "axios";
 import * as React from "react";
 import { Unsubscribe } from "redux";
+import Apron from "../models/Apron";
 import * as Actionable from "../redux/ActionCreators";
 import IAppPropsWithStore from "../redux/State";
-import AddDevice from "./device/AddDevice";
-import ListDevice from "./device/ListDevice";
-import AddGroup from "./group/AddGroup";
-import ListGroup from "./group/ListGroup";
-import StatusLight from "./StatusLight";
+import DeviceManager from "./DeviceManager";
+import GroupManager from "./GroupManager";
+import StatusLightManager from "./StatusLightManager";
 
 export default class App extends React.Component<IAppPropsWithStore, void> {
     private unsubscribe: Unsubscribe;
@@ -19,8 +17,13 @@ export default class App extends React.Component<IAppPropsWithStore, void> {
             self.forceUpdate();
         });
 
-        this.updateDeviceList();
-        this.updateGroupList();
+        Apron.listDevices().then((response) => {
+            self.props.store.dispatch(Actionable.initDevices(response.data));
+        });
+
+        Apron.listGroups().then((response) => {
+            self.props.store.dispatch(Actionable.initGroups(response.data));
+        });
     }
 
     public componentWillUnmount() {
@@ -32,79 +35,25 @@ export default class App extends React.Component<IAppPropsWithStore, void> {
         const { store } = this.props;
         const { devices, groups } = store.getState();
 
-        const existingDevices = devices.map((device, index) => {
-            return (<ListDevice store={store} device={device} key={device.ID} />);
-        });
-
-        const existingGroups = groups.map((group, index) => {
-            return (<ListGroup store={store} group={group} devices={devices} key={group.ID} />);
-        });
-
         return (
             <div className="container">
                 <h1>{title}</h1>
                 <div className="row">
                     <div className="col-md-12">
-                        <h2>Device Manager</h2>
-                        <div className="card">
-                            <div className="card-block">
-                                <div className="row">
-                                    <div className="col-md-4">
-                                        <h3>New Device</h3>
-                                        <AddDevice store={store} />
-                                    </div>
-                                </div>
-                                <hr />
-                                <div className="row">
-                                    <div className="col-md-12">
-                                        <h3>Existing Devices</h3>
-                                        <div className="row">
-                                            {existingDevices}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <h2>Group Manager</h2>
-                        <div className="card">
-                            <div className="card-block">
-                                <div className="row">
-                                    <div className="col-md-4">
-                                        <h3>New Group</h3>
-                                        <AddGroup store={store} />
-                                    </div>
-                                </div>
-                                <hr />
-                                <h3>Existing Groups</h3>
-                                {existingGroups}
-                            </div>
-                        </div>
+                        <DeviceManager store={store} devices={devices} />
                     </div>
                 </div>
                 <div className="row">
                     <div className="col-md-12">
-                        <StatusLight />
+                        <GroupManager store={store} devices={devices} groups={groups} />
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-md-12">
+                        <StatusLightManager />
                     </div>
                 </div>
             </div>
         );
-    }
-
-    private updateDeviceList = (): Promise<void> => {
-        const self = this;
-        return axios
-            .get("/device/list")
-            .then((response) => {
-                self.props.store.dispatch(Actionable.initDevices(response.data));
-            });
-    }
-
-    private updateGroupList = (): Promise<void> => {
-        const self = this;
-        return axios
-            .get("/group/list")
-             .then((response) => {
-                self.props.store.dispatch(Actionable.initGroups(response.data));
-            });
     }
 }

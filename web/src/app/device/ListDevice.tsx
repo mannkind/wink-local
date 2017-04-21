@@ -1,10 +1,13 @@
 import * as React from "react";
-import Apron from "../../models/Apron";
 import IApronDeviceGroup from "../../models/ApronDeviceGroup";
-import * as Actionable from "../../redux/ActionCreators";
-import IAppPropsWithStore from "../../redux/State";
 
-interface IListDeviceProps extends IAppPropsWithStore { device: IApronDeviceGroup; }
+interface IListDeviceProps {
+    device: IApronDeviceGroup;
+    removeDevice(deviceId: number);
+    saveDevice(deviceId: number, name: string);
+    updateDevice(deviceId: number, name: string);
+}
+
 export default class ListDevice extends React.Component<IListDeviceProps, any> {
     public render() {
         const { device } = this.props;
@@ -12,16 +15,16 @@ export default class ListDevice extends React.Component<IListDeviceProps, any> {
             <div className="col col-sm-4" style={{marginBottom: "1rem"}} key={device.ID}>
                 <div className="input-group input-group-sm">
                     <span className="input-group-btn">
-                        <a onClick={this.removeDevice}
+                        <a onClick={this.onClickDelete}
                             className="btn btn-sm btn-danger"
                             tabIndex={-1}>Delete</a>
                     </span>
                     <span className="input-group-addon">{device.ID}</span>
-                    <input onChange={this.updateDevice}
+                    <input onChange={this.onChange}
                         className="form-control form-control-sm"
                         name="name" type="text" value={device.Name}/>
                     <span className="input-group-btn">
-                        <a onClick={this.saveDevice}
+                        <a onClick={this.onClickSave}
                             className="btn btn-sm btn-primary"
                             tabIndex={-1}>Save</a>
                     </span>
@@ -30,27 +33,20 @@ export default class ListDevice extends React.Component<IListDeviceProps, any> {
         );
     }
 
-    private removeDevice = (event: React.FormEvent<HTMLAnchorElement>) => {
+    private onClickDelete = (event: React.FormEvent<HTMLAnchorElement>) => {
         event.preventDefault();
 
-        const self = this;
-        Apron.removeDevice(self.props.device.ID).then(() => {
-            this.props.store.dispatch(Actionable.removeDevice(self.props.device.ID));
-        });
+        this.props.removeDevice(this.props.device.ID);
     }
 
-    private updateDevice = (event: React.FormEvent<HTMLInputElement>) => {
-        const self = this;
+    private onChange = (event: React.FormEvent<HTMLInputElement>) => {
         const name = event.currentTarget.value;
-        this.props.store.dispatch(Actionable.updateDevice(self.props.device.ID, name));
+        this.props.updateDevice(this.props.device.ID, name);
     }
 
-    private saveDevice = (event: React.FormEvent<HTMLAnchorElement>) => {
+    private onClickSave = (event: React.FormEvent<HTMLAnchorElement>) => {
         event.preventDefault();
 
-        const self = this;
-        Apron.updateDevice(self.props.device.ID, self.props.device.Name).then(() => {
-            self.props.store.dispatch(Actionable.saveDevice());
-        });
+        this.props.saveDevice(this.props.device.ID, this.props.device.Name);
     }
 }

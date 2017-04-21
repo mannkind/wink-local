@@ -1,17 +1,21 @@
 import * as React from "react";
-import Apron from "../../models/Apron";
 import IApronDeviceGroup from "../../models/ApronDeviceGroup";
-import * as Actionable from "../../redux/ActionCreators";
-import IAppPropsWithStore from "../../redux/State";
 import AddNode from "./AddNode";
 import DeleteNode from "./DeleteNode";
 
-interface IListGroupProps extends IAppPropsWithStore { devices: IApronDeviceGroup[]; group: IApronDeviceGroup; }
+interface IListGroupProps  {
+    devices: IApronDeviceGroup[];
+    group: IApronDeviceGroup;
+    deleteGroup(groupId: number);
+    addNode(groupId: number, nodeId: number);
+    deleteNode(groupId: number, nodeId: number);
+}
+
 export default class ListGroup extends React.Component<IListGroupProps, void> {
     public render() {
-        const { devices, group, store } = this.props;
+        const { devices, group } = this.props;
         const groupNodes = group.Nodes.map((node, index1) => {
-            return (<DeleteNode store={store} group={group} node={node} />);
+            return (<DeleteNode group={group} node={node} deleteNode={this.props.deleteNode}/>);
         });
         return (
             <div>
@@ -19,7 +23,7 @@ export default class ListGroup extends React.Component<IListGroupProps, void> {
                     <div className="col-sm-4">
                         <div className="input-group input-group-sm">
                             <span className="input-group-btn">
-                                <a onClick={this.removeGroup}
+                                <a onClick={this.onClick}
                                     tabIndex={-1} className="btn btn-sm btn-danger">Delete</a>
                             </span>
                             <span className="input-group-addon">{group.ID}</span>
@@ -31,7 +35,7 @@ export default class ListGroup extends React.Component<IListGroupProps, void> {
                         </div>
                     </div>
                     <div className="col-sm-8">
-                        <AddNode store={store} group={group} devices={devices} />
+                        <AddNode group={group} devices={devices} addNode={this.props.addNode} />
                     </div>
                 </div>
                 <div className="row">
@@ -48,12 +52,9 @@ export default class ListGroup extends React.Component<IListGroupProps, void> {
         );
     }
 
-    private removeGroup = (event: React.FormEvent<HTMLAnchorElement>) => {
+    private onClick = (event: React.FormEvent<HTMLAnchorElement>) => {
         event.preventDefault();
 
-        const self = this;
-        Apron.removeGroup(self.props.group.ID).then(() => {
-            self.props.store.dispatch(Actionable.removeGroup(self.props.group.ID));
-        });
+        this.props.deleteGroup(this.props.group.ID);
     }
 }

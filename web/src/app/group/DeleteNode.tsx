@@ -1,10 +1,12 @@
 import * as React from "react";
-import Apron from "../../models/Apron";
 import IApronDeviceGroup from "../../models/ApronDeviceGroup";
-import * as Actionable from "../../redux/ActionCreators";
-import IAppPropsWithStore from "../../redux/State";
 
-interface IDeleteNodeProps extends IAppPropsWithStore { group: IApronDeviceGroup; node: IApronDeviceGroup; }
+interface IDeleteNodeProps {
+    group: IApronDeviceGroup;
+    node: IApronDeviceGroup;
+    deleteNode(groupId: number, nodeId: number);
+}
+
 export default class DeleteNode extends React.Component<IDeleteNodeProps, any> {
     public render() {
         const { group, node } = this.props;
@@ -13,7 +15,7 @@ export default class DeleteNode extends React.Component<IDeleteNodeProps, any> {
                 <div className="input-group input-group-sm">
                     <span className="input-group-btn">
                         <a tabIndex={-1} className="btn btn-sm btn-danger"
-                            onClick={this.deleteNode}>Delete</a>
+                            onClick={this.onClick}>Delete</a>
                     </span>
                     <input value={node.Name}
                         className="form-control form-control-sm"
@@ -23,12 +25,8 @@ export default class DeleteNode extends React.Component<IDeleteNodeProps, any> {
         );
     }
 
-    private deleteNode = (event: React.FormEvent<HTMLAnchorElement>) => {
+    private onClick = (event: React.FormEvent<HTMLAnchorElement>) => {
         event.preventDefault();
-
-        const self = this;
-        Apron.removeDeviceFromGroup(self.props.group.ID, self.props.node.ID).then((response) => {
-            self.props.store.dispatch(Actionable.removeDeviceFromGroup(this.props.group.ID, self.props.node.ID));
-        });
+        this.props.deleteNode(this.props.group.ID, this.props.node.ID);
     }
 }
