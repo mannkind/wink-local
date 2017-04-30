@@ -7,28 +7,26 @@
   "dependencies": {
     "axios": "^0.16.1",
     "bootstrap": "^3.3.7",
-    "react": "^15.4.2",
-    "react-color": "^2.11.4",
-    "react-dom": "^15.4.2",
-    "react-hot-loader": "next",
+    "react": "^15.5.4",
+    "react-color": "^2.11.7",
+    "react-dom": "^15.5.4",
     "react-redux": "^5.0.4",
     "redux": "^3.6.0"
   },
   "devDependencies": {
-    "@types/jest": "^16.0.4",
-    "@types/react": "^15.0.4",
+    "@types/react": "^15.0.23",
     "@types/react-dom": "^0.14.21",
-    "@types/react-test-renderer": "^15.4.2",
+    "@types/react-test-renderer": "^15.5.0",
     "neutrino": "^5.0.0",
-    "neutrino-preset-jest": "^5.0.0",
-    "neutrino-preset-react": "^5.0.0",
-    "neutrino-preset-typescript": "^2.0.0",
+    "neutrino-preset-ts-react": "^1.1.0",
+    "react-hot-loader": "next",
     "tslint": "^5.1.0",
     "tslint-react": "^2.5.0",
-    "typescript": "^2.2.2"
+    "typescript": "^2.3.2"
   },
   "neutrino": {
     "options": {
+      "entry": "index.tsx",
       "output": "./dist",
       "html": {
         "title": "Wink-Local UI"
@@ -47,9 +45,7 @@
       }
     },
     "use": [
-      "neutrino-preset-jest",
-      "neutrino-preset-react",
-      "neutrino-preset-typescript"
+      "neutrino-preset-ts-react"
     ]
   },
   "scripts": {

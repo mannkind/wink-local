@@ -1,5 +1,4 @@
 import * as React from "react";
-import IApronDeviceGroup from "../../models/ApronDeviceGroup";
 
 interface IAddGroupProps {
     addGroup(name: string);

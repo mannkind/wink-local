@@ -9,7 +9,7 @@ interface IDeleteNodeProps {
 
 export default class DeleteNode extends React.Component<IDeleteNodeProps, any> {
     public render() {
-        const { group, node } = this.props;
+        const { node } = this.props;
         return (
             <div className="col col-md-4" style={{marginBottom: "1rem"}} key={node.ID}>
                 <div className="input-group input-group-sm">

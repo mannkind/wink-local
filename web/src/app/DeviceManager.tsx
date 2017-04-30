@@ -12,7 +12,7 @@ interface IDeviceManagerProps extends IAppPropsWithStore {
 
 export default class DeviceManager extends React.Component<IDeviceManagerProps, void> {
     public render() {
-        const { devices, store } = this.props;
+        const { devices } = this.props;
 
         const existingDevices = devices.map((device, index) => {
             return (
@@ -66,7 +66,7 @@ export default class DeviceManager extends React.Component<IDeviceManagerProps, 
     private removeDevice = (deviceId: number) => {
         const self = this;
         Apron.removeDevice(deviceId).then(() => {
-            this.props.store.dispatch(Actionable.removeDevice(deviceId));
+            self.props.store.dispatch(Actionable.removeDevice(deviceId));
         });
     }
 

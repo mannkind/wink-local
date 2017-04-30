@@ -1,0 +1,14 @@
+{
+	"compilerOptions": {
+		"target": "es6",
+		"module": "commonjs",
+		"noUnusedLocals": true,
+		"sourceMap": true,
+		"pretty": true,
+    	"jsx": "react"
+	},
+	"exclude": [
+		"node_modules"
+	],
+	"compileOnSave": false
+}

@@ -1,4 +1,3 @@
-import IApronDeviceGroup from "../models/ApronDeviceGroup";
 import { IAppActions, IAppActionTypes } from "./Actions";
 import { IAppState } from "./State";
 
@@ -86,7 +85,6 @@ export const AppReducer = (state: IAppState, action: IAppActions): IAppState => 
             case IAppActionTypes.REMOVE_DEVICE_FROM_GROUP:
                 return (() => {
                     const { devices, groups } = state;
-                    const device = devices.find((x) => x.ID === action.payload.deviceId);
                     const group = groups.find((x) => x.ID === action.payload.groupId);
 
                     if (group == null || group.Nodes == null) {

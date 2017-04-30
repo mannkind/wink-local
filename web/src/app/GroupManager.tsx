@@ -14,7 +14,7 @@ interface IGroupManagerProps extends IAppPropsWithStore {
 export default class GroupManager extends React.Component<IGroupManagerProps, void> {
 
     public render() {
-        const { devices, groups, store } = this.props;
+        const { devices, groups } = this.props;
 
         const existingGroups = groups.map((group, index) => {
             return (
