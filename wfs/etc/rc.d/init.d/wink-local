@@ -1,20 +1,28 @@
-#!/bin/sh
+#!/bin/bash
+WINKLOCAL_CMD="/opt/wink-local/wink-local -c /opt/wink-local/wink-local.yaml"
 
 case "${1}" in
-start)
-echo -n "Starting wink-local..."
-/opt/wink-local/wink-local -c /opt/wink-local/wink-local.yaml > /var/log/wink-local.log 2>&1 &
-;;
-stop)
-echo -n "Stopping wink-local..."
-killall wink-local
-;;
-restart)
-${0} stop
-sleep 1
-${0} start
-;;
-*)
-echo "Usage: $0 [start|stop|restart]"
-;;
+   start)
+      logger -p info -s "Starting wink-local service"
+
+      # redirect stderr to stdout (2>&1), which gets piped to logger, so we get stack traces in logger
+      start-stop-daemon --start --quiet --make-pidfile --pidfile "/var/run/winklocal.pid" --background --startas /bin/bash -- -c \
+         "exec $WINKLOCAL_CMD 2>&1 | logger -p info -t 'wink-local'"
+      logger -p debug "There will be no notice in this script if wink-local server fails to start"
+      ;;
+
+   stop)
+      logger -p info -s "Stopping wink-local service"
+      terminate_verify wink-local
+      ;;
+
+   restart)
+      ${0} stop
+      sleep 1
+      ${0} start
+      ;;
+
+   *)
+      echo "Usage: $0 [start|stop|restart]"
+      ;;
 esac

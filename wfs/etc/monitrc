@@ -1,4 +1,5 @@
-check process wink-local matching "wink-local"
+
+check process wink-local with pidfile /var/run/winklocal.pid
     group wink-services
     if total memory > 34 MB then restart
     if total cpu > 80% for 8 cycles then restart
