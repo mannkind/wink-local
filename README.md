@@ -55,3 +55,6 @@ scp $WFS/etc/rc.d/init.d/wink-local $WINKHUBHOST:/etc/rc.d/init.d/wink-local
 cat $WFS/etc/monitrc | ssh $WINKHUBHOST "cat >> /etc/monitrc"
 cat $WFS/etc/rc.d/init.d/wink-local | ssh $WINKHUBHOST "cat >> /etc/rc.d/init.d/wink-local"
 ```
+
+# Notice - Unmaintained
+Unmaintained. I decomissioned my Wink Hub in favor of a HUSBZB-1 ZWave/Zigbee stick. The repository will remain available for reference, but the code is unmaintained.
